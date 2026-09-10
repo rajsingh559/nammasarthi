@@ -59,6 +59,31 @@ class Trip(models.Model):
     driver=models.ForeignKey(Driver,on_delete=models.CASCADE,related_name='trips')
     bus_number=models.CharField(max_length=30)
     route=models.ForeignKey(Route,on_delete=models.CASCADE,related_name='trips')
+    start_stop=model.ForeignKey(BusStop,on_delete=models.CASCADE,related_name='trip_start_stops')
+    destination_stop=models,ForeignKey(BusStop, on_delete=models.CASCADE, related_name='trip_dest_stops')
+    started_at=models.DateTimeField(auto_now_add=True)
+    ended_at=models.DateTimeField(null=True,blank=True)
+
+    current_latitude=models.FloatField(null=True,blank=True)
+    current_longitude=models.DateTimeField(null=True,blank=True)
+    stop_reason=models.CharField(max_length=200,null=True,blank=True)
+
+    class Meta:
+        ordering=['-started_at']
+    def __str__(self):
+        return f"Trip #{self.id} - {self.bus_number} ({self.status}) - {self.started_at.strftime('%d %b %Y %H:%M')}"
+
+class TripStopEvent(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='stop_events')
+    reason = models.CharField(max_length=200)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    started_at = models.DateTimeField(auto_now_add=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"StopEvent on Trip #{self.trip.id}: {self.reason} at {self.started_at}"
     
+
 
 # Create your models here.
