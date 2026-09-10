@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-7nqcndlf=ac%q_hn__ar0-b05qu1(61u03tf$_$!g95+0+(l5@
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '8000-kode-ws-20cd980d3.hebbale.academy',
+    '8001-kode-ws-20cd980d3.hebbale.academy',
     'localhost',
     '127.0.0.1',
 ]
