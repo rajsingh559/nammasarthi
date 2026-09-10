@@ -33,5 +33,3 @@ class TripStopEventAdmin(admin.ModelAdmin):
     list_display=('id','trip','reason','started_at','resolved_at')
     list_filter=('reason',)
 
-
-# Register your models here.

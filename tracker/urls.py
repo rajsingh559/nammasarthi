@@ -1,14 +1,14 @@
-from django.urlsn import path
+from django.urls import path
 from tracker import views 
 
 urlpatterns=[
-    path('',view.home,name='home'),
+    path('',views.home,name='home'),
     path('driver/register/',views.driver_register,name='driver_register'),
     path('driver/login/',views.driver_login,name='driver_login'),
     path('driver/logout/',views.driver_logout,name='driver_logout'),
     path('driver/dashboard/',views.driver_dashboard,name='driver_dashboard'),
 
-    path('',view.home,name='home'),
+    path('',views.home,name='home'),
     path('passenger/register/',views.driver_register,name='user_register'),
     path('passenger/login/',views.driver_login,name='user_login'),
     path('passenger/logout/',views.driver_logout,name='user_logout'),
