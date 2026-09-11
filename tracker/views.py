@@ -9,7 +9,7 @@ from datetime import timedelta
 import json
 import math
 
-from tracker.models import Route, BusStop, Driver, Passenger, Trip, TripStopEvent
+from tracker.models import Route, BusStop, Driver, Passenger, Trip, TripStopEvent, Complaint
 
 def get_current_driver(request):
     driver_id = request.session.get('driver_id')
@@ -179,17 +179,96 @@ def user_logout(request):
 
 def user_dashboard(request):
     passenger = get_current_passenger(request)
+
     if not passenger:
-        messages.error(request, "Please login as passenger to access dashboard.")
+        messages.error(
+            request,
+            "Please login as passenger to access dashboard."
+        )
         return redirect('user_login')
 
-    stop_names = BusStop.objects.values_list('stop_village_name', flat=True).distinct().order_by('stop_village_name')
+    # All unique stop names for bus search
+    stop_names = (
+        BusStop.objects
+        .values_list('stop_village_name', flat=True)
+        .distinct()
+        .order_by('stop_village_name')
+    )
 
-    return render(request, 'user_dashboard.html', {
-        'passenger': passenger,
-        'stop_names': stop_names,
-    })
+    # Currently running buses
+    active_trips = (
+        Trip.objects
+        .filter(
+            status__in=['LIVE', 'STOPPED', 'DELAYED']
+        )
+        .select_related('route', 'driver')
+        .order_by('bus_number')
+    )
 
+    # Stops available for complaint reporting
+    stops = (
+        BusStop.objects
+        .select_related('route')
+        .order_by('route__route_id', 'stop_seq')
+    )
+
+    return render(
+        request,
+        'user_dashboard.html',
+        {
+            'passenger': passenger,
+            'stop_names': stop_names,
+            'active_trips': active_trips,
+            'stops': stops,
+        }
+    )
+
+def submit_complaint(request):
+    passenger = get_current_passenger(request)
+
+    if not passenger:
+        return redirect('user_login')
+
+    if request.method != 'POST':
+        return redirect('user_dashboard')
+
+    bus_number = request.POST.get('bus_number', '').strip()
+    complaint_type = request.POST.get('complaint_type', '').strip()
+    stop_id = request.POST.get('stop_id')
+    description = request.POST.get('description', '').strip()
+
+    if not bus_number or not complaint_type:
+        messages.error(
+            request,
+            "Please select a bus and complaint type."
+        )
+        return redirect('user_dashboard')
+
+    stop = None
+    route = None
+
+    if stop_id:
+        try:
+            stop = BusStop.objects.select_related('route').get(id=stop_id)
+            route = stop.route
+        except BusStop.DoesNotExist:
+            pass
+
+    Complaint.objects.create(
+        passenger=passenger,
+        bus_number=bus_number,
+        route=route,
+        stop=stop,
+        complaint_type=complaint_type,
+        description=description,
+    )
+
+    messages.success(
+        request,
+        "Your complaint has been submitted successfully."
+    )
+
+    return redirect('user_dashboard')
 # --- TRIP & GPS APIS ---
 
 def api_get_route_stops(request, route_id):
@@ -551,3 +630,47 @@ def api_search_buses(request):
                         })
 
     return JsonResponse({'buses': matching_buses})
+
+    def submit_complaint(request):
+        passenger = get_current_passenger(request)
+
+    if not passenger:
+        return redirect('user_login')
+
+    if request.method == 'POST':
+        bus_number = request.POST.get('bus_number', '').strip()
+        complaint_type = request.POST.get('complaint_type', '').strip()
+        stop_id = request.POST.get('stop_id')
+        description = request.POST.get('description', '').strip()
+
+        if not bus_number or not complaint_type:
+            messages.error(request, "Please select a bus and complaint type.")
+            return redirect('user_dashboard')
+
+        stop = None
+        route = None
+
+        if stop_id:
+            try:
+                stop = BusStop.objects.select_related('route').get(id=stop_id)
+                route = stop.route
+            except BusStop.DoesNotExist:
+                pass
+
+        Complaint.objects.create(
+            passenger=passenger,
+            bus_number=bus_number,
+            route=route,
+            stop=stop,
+            complaint_type=complaint_type,
+            description=description,
+        )
+
+        messages.success(
+            request,
+            "Your complaint has been submitted successfully."
+        )
+
+        return redirect('user_dashboard')
+
+    return redirect('user_dashboard')

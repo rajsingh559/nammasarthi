@@ -33,3 +33,31 @@ class TripStopEventAdmin(admin.ModelAdmin):
     list_display=('id','trip','reason','started_at','resolved_at')
     list_filter=('reason',)
 
+from django.contrib import admin
+from .models import Complaint
+
+@admin.register(Complaint)
+class ComplaintAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'bus_number',
+        'complaint_type',
+        'passenger',
+        'status',
+        'created_at',
+    )
+
+    list_filter = (
+        'complaint_type',
+        'status',
+        'created_at',
+    )
+
+    search_fields = (
+        'bus_number',
+        'passenger__name',
+        'passenger__phone_number',
+        'description',
+    )
+
+    list_editable = ('status',)

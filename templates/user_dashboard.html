@@ -4,96 +4,453 @@
 {% block title %}Find Your Bus — Namma Sarthi{% endblock %}
 
 {% block content %}
+
 <div class="dashboard-container">
+
+    <!-- Dashboard Header -->
     <div class="dashboard-header">
         <div>
             <h1 data-i18n="nav_passenger">Find Your Bus</h1>
-            <p class="user-greeting"><span data-i18n="welcome_driver">Welcome</span>, <strong>{{ passenger.name }}</strong> (📱 {{ passenger.phone_number }})</p>
+
+            <p class="user-greeting">
+                <span data-i18n="welcome_driver">Welcome</span>,
+                <strong>{{ passenger.name }}</strong>
+                (📱 {{ passenger.phone_number }})
+            </p>
         </div>
+
         <div>
-            <a href="{% url 'user_logout' %}" class="btn btn-outline-danger" data-i18n="link_login">Logout</a>
+            <a href="{% url 'user_logout' %}"
+               class="btn btn-outline-danger">
+                Logout
+            </a>
         </div>
     </div>
 
+
     <!-- Live Current Time Clock Banner -->
-    <div class="current-time-banner card" style="padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; background: #0f172a; color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(15,23,42,0.1);">
-        <div style="font-weight: 700; font-size: 0.95rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem;">
-            <span>🕐 <span data-i18n="live_current_time">CURRENT TIME</span></span>
+    <div class="current-time-banner card"
+         style="
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            background: #0f172a;
+            color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(15,23,42,0.1);
+         ">
+
+        <div style="
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        ">
+            <span>
+                🕐
+                <span data-i18n="live_current_time">
+                    CURRENT TIME
+                </span>
+            </span>
         </div>
-        <div id="live-current-clock" style="font-size: 1.4rem; font-weight: 800; color: #38bdf8; font-family: monospace;">
+
+        <div id="live-current-clock"
+             style="
+                font-size: 1.4rem;
+                font-weight: 800;
+                color: #38bdf8;
+                font-family: monospace;
+             ">
             --:-- --
         </div>
+
     </div>
+
 
     <!-- Bus Search Card -->
     <div class="card search-card">
+
         <div class="card-header">
-            <h2 data-i18n="find_bus_title">🔍 Search Government Bus Routes</h2>
-            <p data-i18n="find_bus_sub">Select your starting stop and destination from our dataset</p>
+
+            <h2 data-i18n="find_bus_title">
+                🔍 Search Government Bus Routes
+            </h2>
+
+            <p data-i18n="find_bus_sub">
+                Select your starting stop and destination from our dataset
+            </p>
+
         </div>
+
+
         <div class="card-body">
-            <form id="bus-search-form" class="search-form-grid">
+
+            <form id="bus-search-form"
+                  class="search-form-grid">
+
+                <!-- Source -->
                 <div class="form-group">
-                    <label for="source_stop" data-i18n="label_source_stop">Source Stop</label>
-                    <select id="source_stop" name="source" class="form-control" required>
-                        <option value="" data-i18n="select_source_ph">-- Select Source ▼ --</option>
+
+                    <label for="source_stop"
+                           data-i18n="label_source_stop">
+                        Source Stop
+                    </label>
+
+                    <select id="source_stop"
+                            name="source"
+                            class="form-control"
+                            required>
+
+                        <option value=""
+                                data-i18n="select_source_ph">
+                            -- Select Source ▼ --
+                        </option>
+
                         {% for stop_name in stop_names %}
-                            <option value="{{ stop_name }}">{{ stop_name }}</option>
+
+                            <option value="{{ stop_name }}">
+                                {{ stop_name }}
+                            </option>
+
                         {% endfor %}
+
                     </select>
+
                 </div>
 
+
+                <!-- Destination -->
                 <div class="form-group">
-                    <label for="destination_stop" data-i18n="label_dest_stop">Destination Stop</label>
-                    <select id="destination_stop" name="destination" class="form-control" disabled required>
-                        <option value="" data-i18n="select_dest_ph">-- Select Source First --</option>
+
+                    <label for="destination_stop"
+                           data-i18n="label_dest_stop">
+                        Destination Stop
+                    </label>
+
+                    <select id="destination_stop"
+                            name="destination"
+                            class="form-control"
+                            disabled
+                            required>
+
+                        <option value=""
+                                data-i18n="select_dest_ph">
+                            -- Select Source First --
+                        </option>
+
                     </select>
+
                 </div>
 
+
+                <!-- Search Button -->
                 <div class="form-actions-search">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" data-i18n="btn_search_buses">SEARCH BUSES</button>
+
+                    <button type="submit"
+                            class="btn btn-primary btn-lg btn-block"
+                            data-i18n="btn_search_buses">
+                        SEARCH BUSES
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
     </div>
 
-    <!-- Search Results Container -->
+
+    <!-- Search Results -->
     <div class="search-results-section">
-        <div id="results-loading" class="text-center d-none">
+
+        <div id="results-loading"
+             class="text-center d-none">
+
             <div class="spinner"></div>
-            <p data-i18n="searching_loading">Searching for live buses on route...</p>
+
+            <p data-i18n="searching_loading">
+                Searching for live buses on route...
+            </p>
+
         </div>
 
-        <div id="no-buses-alert" class="alert alert-info d-none">
+
+        <div id="no-buses-alert"
+             class="alert alert-info d-none">
+
             <span class="info-icon">ℹ️</span>
+
             <div>
-                <strong data-i18n="no_buses_found">No live buses found for this route.</strong>
-                <p data-i18n="no_buses_sub">Ensure a driver has registered and started a journey on this route in the Driver Portal.</p>
+
+                <strong data-i18n="no_buses_found">
+                    No live buses found for this route.
+                </strong>
+
+                <p data-i18n="no_buses_sub">
+                    Ensure a driver has registered and started a journey
+                    on this route in the Driver Portal.
+                </p>
+
             </div>
+
         </div>
 
-        <div id="bus-cards-container" class="bus-cards-grid">
-            <!-- Dynamically populated via AJAX fetch -->
+
+        <div id="bus-cards-container"
+             class="bus-cards-grid">
+            <!-- Dynamically populated via AJAX -->
         </div>
+
     </div>
+
 </div>
 
-<!-- Live Map Modal -->
-<div id="map-modal" class="modal-backdrop d-none">
+
+<!-- ========================================================= -->
+<!-- COMPLAINT SECTION -->
+<!-- ========================================================= -->
+
+<div class="dashboard-container"
+     style="margin-top: 1.5rem;">
+
+    <div class="card complaint-card">
+
+        <div class="card-header">
+
+            <h2>
+                🚨 Report a Bus Problem
+            </h2>
+
+            <p>
+                Report if a bus is frequently late, does not arrive,
+                skips your stop, or has another problem.
+            </p>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <form method="POST"
+                  action="{% url 'submit_complaint' %}">
+
+                {% csrf_token %}
+
+
+                <div class="form-grid">
+
+
+                    <!-- Bus -->
+                    <div class="form-group">
+
+                        <label for="complaint_bus">
+                            Bus Number
+                        </label>
+
+                        <select id="complaint_bus"
+                                name="bus_number"
+                                class="form-control"
+                                required>
+
+                            <option value="">
+                                -- Select Bus --
+                            </option>
+
+                            {% for trip in active_trips %}
+
+                                <option value="{{ trip.bus_number }}">
+                                    {{ trip.bus_number }}
+                                    — {{ trip.route.route_name }}
+                                </option>
+
+                            {% empty %}
+
+                                <option value=""
+                                        disabled>
+                                    No live buses available
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Complaint Type -->
+                    <div class="form-group">
+
+                        <label for="complaint_type">
+                            Complaint Type
+                        </label>
+
+                        <select id="complaint_type"
+                                name="complaint_type"
+                                class="form-control"
+                                required>
+
+                            <option value="">
+                                -- Select Problem --
+                            </option>
+
+                            <option value="LATE">
+                                🕐 Bus Frequently Late
+                            </option>
+
+                            <option value="NOT_ARRIVED">
+                                ❌ Bus Did Not Arrive
+                            </option>
+
+                            <option value="SKIPPED_STOP">
+                                🚌 Bus Skipped My Stop
+                            </option>
+
+                            <option value="CANCELLED">
+                                🚫 Bus Service Cancelled
+                            </option>
+
+                            <option value="WRONG_ROUTE">
+                                🗺️ Bus Not Following Route
+                            </option>
+
+                            <option value="WRONG_LOCATION">
+                                📍 Wrong GPS Location
+                            </option>
+
+                            <option value="OTHER">
+                                📝 Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Stop -->
+                    <div class="form-group">
+
+                        <label for="complaint_stop">
+                            Your Stop
+                        </label>
+
+                        <select id="complaint_stop"
+                                name="stop_id"
+                                class="form-control">
+
+                            <option value="">
+                                -- Select Stop --
+                            </option>
+
+                            {% for stop in stops %}
+
+                                <option value="{{ stop.id }}">
+                                    #{{ stop.stop_seq }}
+                                    {{ stop.stop_village_name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Description -->
+                    <div class="form-group full-width">
+
+                        <label for="complaint_description">
+                            Description
+                        </label>
+
+                        <textarea id="complaint_description"
+                                  name="description"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Describe what happened..."></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Submit -->
+                <button type="submit"
+                        class="btn btn-secondary btn-lg"
+                        style="margin-top: 1rem;">
+
+                    🚨 Submit Complaint
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- LIVE MAP MODAL -->
+<!-- ========================================================= -->
+
+<div id="map-modal"
+     class="modal-backdrop d-none">
+
     <div class="modal-content">
+
         <div class="modal-header">
+
             <div>
-                <h3 id="modal-bus-title">🚌 Live Bus Tracker</h3>
-                <p id="modal-route-subtitle" class="subtext">Updating live location every 5 seconds</p>
+
+                <h3 id="modal-bus-title">
+                    🚌 Live Bus Tracker
+                </h3>
+
+                <p id="modal-route-subtitle"
+                   class="subtext">
+                    Updating live location every 5 seconds
+                </p>
+
             </div>
-            <button type="button" id="btn-close-modal" class="btn-close">&times;</button>
+
+            <button type="button"
+                    id="btn-close-modal"
+                    class="btn-close">
+                &times;
+            </button>
+
         </div>
+
+
         <div class="modal-body">
-            <div id="modal-delay-notice" class="alert alert-warning d-none">
-                <strong>⚠️ BUS DELAYED:</strong> <span id="modal-delay-reason"></span>
+
+            <div id="modal-delay-notice"
+                 class="alert alert-warning d-none">
+
+                <strong>
+                    ⚠️ BUS DELAYED:
+                </strong>
+
+                <span id="modal-delay-reason"></span>
+
             </div>
-            <div id="passenger-map" class="map-container modal-map"></div>
+
+
+            <div id="passenger-map"
+                 class="map-container modal-map">
+            </div>
+
         </div>
+
     </div>
+
 </div>
+
 {% endblock %}

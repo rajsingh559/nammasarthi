@@ -93,3 +93,62 @@ class TripStopEvent(models.Model):
 
     def __str__(self):
         return f"StopEvent on Trip #{self.trip.id}: {self.reason} at {self.started_at}"
+
+class Complaint(models.Model):
+    COMPLAINT_TYPES = [
+        ('LATE', 'Bus Frequently Late'),
+        ('NOT_ARRIVED', 'Bus Did Not Arrive'),
+        ('SKIPPED_STOP', 'Bus Skipped My Stop'),
+        ('CANCELLED', 'Bus Service Cancelled'),
+        ('WRONG_ROUTE', 'Bus Not Following Route'),
+        ('WRONG_LOCATION', 'Wrong GPS Location'),
+        ('OTHER', 'Other'),
+    ]
+
+    STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('REVIEWED', 'Reviewed'),
+        ('RESOLVED', 'Resolved'),
+    ]
+
+    passenger = models.ForeignKey(
+        Passenger,
+        on_delete=models.CASCADE,
+        related_name='complaints'
+    )
+
+    bus_number = models.CharField(max_length=30)
+
+    route = models.ForeignKey(
+        Route,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='complaints'
+    )
+
+    stop = models.ForeignKey(
+        BusStop,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='complaints'
+    )
+
+    complaint_type = models.CharField(
+        max_length=30,
+        choices=COMPLAINT_TYPES
+    )
+
+    description = models.TextField(blank=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='PENDING'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.bus_number} - {self.get_complaint_type_display()}"
