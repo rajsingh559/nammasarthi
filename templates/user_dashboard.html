@@ -7,18 +7,18 @@
 <div class="dashboard-container">
     <div class="dashboard-header">
         <div>
-            <h1>Find Your Bus</h1>
-            <p class="user-greeting">Welcome, <strong>{{ passenger.name }}</strong> (📱 {{ passenger.phone_number }})</p>
+            <h1 data-i18n="nav_passenger">Find Your Bus</h1>
+            <p class="user-greeting"><span data-i18n="welcome_driver">Welcome</span>, <strong>{{ passenger.name }}</strong> (📱 {{ passenger.phone_number }})</p>
         </div>
         <div>
-            <a href="{% url 'user_logout' %}" class="btn btn-outline-danger">Logout</a>
+            <a href="{% url 'user_logout' %}" class="btn btn-outline-danger" data-i18n="link_login">Logout</a>
         </div>
     </div>
 
     <!-- Live Current Time Clock Banner -->
     <div class="current-time-banner card" style="padding: 0.85rem 1.25rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; background: #0f172a; color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(15,23,42,0.1);">
         <div style="font-weight: 700; font-size: 0.95rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem;">
-            <span>🕐 CURRENT TIME</span>
+            <span>🕐 <span data-i18n="live_current_time">CURRENT TIME</span></span>
         </div>
         <div id="live-current-clock" style="font-size: 1.4rem; font-weight: 800; color: #38bdf8; font-family: monospace;">
             --:-- --
@@ -28,15 +28,15 @@
     <!-- Bus Search Card -->
     <div class="card search-card">
         <div class="card-header">
-            <h2>🔍 Search Government Bus Routes</h2>
-            <p>Select your starting stop and destination from our dataset</p>
+            <h2 data-i18n="find_bus_title">🔍 Search Government Bus Routes</h2>
+            <p data-i18n="find_bus_sub">Select your starting stop and destination from our dataset</p>
         </div>
         <div class="card-body">
             <form id="bus-search-form" class="search-form-grid">
                 <div class="form-group">
-                    <label for="source_stop">Source Stop</label>
+                    <label for="source_stop" data-i18n="label_source_stop">Source Stop</label>
                     <select id="source_stop" name="source" class="form-control" required>
-                        <option value="">-- Select Source ▼ --</option>
+                        <option value="" data-i18n="select_source_ph">-- Select Source ▼ --</option>
                         {% for stop_name in stop_names %}
                             <option value="{{ stop_name }}">{{ stop_name }}</option>
                         {% endfor %}
@@ -44,14 +44,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="destination_stop">Destination Stop</label>
+                    <label for="destination_stop" data-i18n="label_dest_stop">Destination Stop</label>
                     <select id="destination_stop" name="destination" class="form-control" disabled required>
-                        <option value="">-- Select Source First --</option>
+                        <option value="" data-i18n="select_dest_ph">-- Select Source First --</option>
                     </select>
                 </div>
 
                 <div class="form-actions-search">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">SEARCH BUSES</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" data-i18n="btn_search_buses">SEARCH BUSES</button>
                 </div>
             </form>
         </div>
@@ -61,14 +61,14 @@
     <div class="search-results-section">
         <div id="results-loading" class="text-center d-none">
             <div class="spinner"></div>
-            <p>Searching for live buses on route...</p>
+            <p data-i18n="searching_loading">Searching for live buses on route...</p>
         </div>
 
         <div id="no-buses-alert" class="alert alert-info d-none">
             <span class="info-icon">ℹ️</span>
             <div>
-                <strong>No live buses found for this route.</strong>
-                <p>Ensure a driver has registered and started a journey on this route in the Driver Portal.</p>
+                <strong data-i18n="no_buses_found">No live buses found for this route.</strong>
+                <p data-i18n="no_buses_sub">Ensure a driver has registered and started a journey on this route in the Driver Portal.</p>
             </div>
         </div>
 

@@ -37,7 +37,7 @@ def home(request):
         'passenger': passenger,
     })
 
-
+# --- DRIVER AUTH & DASHBOARD ---
 
 def driver_register(request):
     routes = Route.objects.all().order_by('route_id')
@@ -106,13 +106,13 @@ def driver_dashboard(request):
         messages.error(request, "Please login as driver to access dashboard.")
         return redirect('driver_login')
 
-    
+    # Check for active trip (LIVE, STOPPED, DELAYED)
     active_trip = Trip.objects.filter(driver=driver, status__in=['LIVE', 'STOPPED', 'DELAYED']).first()
 
-   
+    # Recent trip history
     recent_trips = Trip.objects.filter(driver=driver).order_by('-started_at')[:10]
 
-    
+    # Check if stationary >= 10 minutes
     is_stopped_long = False
     if active_trip and active_trip.stopped_since:
         duration = timezone.now() - active_trip.stopped_since
@@ -127,7 +127,7 @@ def driver_dashboard(request):
         'routing_api_key_available': bool(getattr(settings, 'ROUTING_API_KEY', '')),
     })
 
-
+# --- PASSENGER AUTH & DASHBOARD ---
 
 def user_register(request):
     if request.method == 'POST':

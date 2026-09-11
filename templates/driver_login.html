@@ -7,27 +7,27 @@
     <div class="auth-card">
         <div class="auth-header">
             <span class="auth-icon">🚌</span>
-            <h2>Driver Login</h2>
-            <p>Access your driver dashboard</p>
+            <h2 data-i18n="driver_login_title">Driver Login</h2>
+            <p data-i18n="nav_driver">Access your driver dashboard</p>
         </div>
 
         <form method="POST" action="{% url 'driver_login' %}" class="auth-form">
             {% csrf_token %}
             <div class="form-group">
-                <label for="phone">Phone Number</label>
+                <label for="phone" data-i18n="phone_label">Phone Number</label>
                 <input type="tel" id="phone" name="phone" class="form-control" placeholder="Enter registered phone number" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password" data-i18n="password_label">Password</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
             </div>
 
-            <button type="submit" class="btn btn-secondary btn-block">Login to Dashboard</button>
+            <button type="submit" class="btn btn-secondary btn-block" data-i18n="btn_login">LOGIN</button>
         </form>
 
         <div class="auth-footer">
-            <p>New driver? <a href="{% url 'driver_register' %}">Register here</a></p>
+            <p><span data-i18n="no_account">New driver?</span> <a href="{% url 'driver_register' %}" data-i18n="link_register">Register here</a></p>
         </div>
     </div>
 </div>

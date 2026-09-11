@@ -1,1 +1,5 @@
-Requirement already satisfied: python-dotenv in /workspace/venv/lib/python3.13/site-packages (1.2.3)
+Collecting python-dotenv
+  Downloading python_dotenv-1.2.3-py3-none-any.whl.metadata (29 kB)
+Downloading python_dotenv-1.2.3-py3-none-any.whl (22 kB)
+Installing collected packages: python-dotenv
+Successfully installed python-dotenv-1.2.3

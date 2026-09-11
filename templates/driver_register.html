@@ -7,37 +7,37 @@
     <div class="auth-card">
         <div class="auth-header">
             <span class="auth-icon">🚌</span>
-            <h2>Driver Registration</h2>
-            <p>Save your permanent driver and bus details once</p>
+            <h2 data-i18n="driver_reg_title">Driver Registration</h2>
+            <p data-i18n="nav_driver">Save your permanent driver and bus details once</p>
         </div>
 
         <form method="POST" action="{% url 'driver_register' %}" class="auth-form">
             {% csrf_token %}
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="name">Driver Name</label>
+                    <label for="name" data-i18n="name_label">Driver Name</label>
                     <input type="text" id="name" name="name" class="form-control" placeholder="e.g. Shivam Verma" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone" data-i18n="phone_label">Phone Number</label>
                     <input type="tel" id="phone" name="phone" class="form-control" placeholder="e.g. 9876543210" required>
                 </div>
 
                 <div class="form-group full-width">
-                    <label for="password">Password</label>
+                    <label for="password" data-i18n="password_label">Password</label>
                     <input type="password" id="password" name="password" class="form-control" placeholder="Create a secure password" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="bus_number">Bus Registration Number</label>
+                    <label for="bus_number" data-i18n="bus_num_label">Bus Registration Number</label>
                     <input type="text" id="bus_number" name="bus_number" class="form-control" placeholder="e.g. KA-09-F-1234" value="KA-09-F-1234" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="route_select">Select Route</label>
+                    <label for="route_select" data-i18n="assigned_route">Select Route</label>
                     <select id="route_select" name="route_id" class="form-control" required>
-                        <option value="">-- Choose Dataset Route --</option>
+                        <option value="" data-i18n="select_route_ph">-- Choose Dataset Route --</option>
                         {% for r in routes %}
                             <option value="{{ r.route_id }}" data-service="{{ r.service_type }}">
                                 {{ r.route_id }} — {{ r.route_name }}
@@ -47,25 +47,25 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="start_stop_select">Default Starting Stop</label>
+                    <label for="start_stop_select" data-i18n="label_source_stop">Default Starting Stop</label>
                     <select id="start_stop_select" name="start_stop_id" class="form-control" disabled required>
-                        <option value="">-- Select Route First --</option>
+                        <option value="" data-i18n="select_source_ph">-- Select Route First --</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="dest_stop_select">Default Destination Stop</label>
+                    <label for="dest_stop_select" data-i18n="label_dest_stop">Default Destination Stop</label>
                     <select id="dest_stop_select" name="dest_stop_id" class="form-control" disabled required>
-                        <option value="">-- Select Starting Stop First --</option>
+                        <option value="" data-i18n="select_dest_ph">-- Select Starting Stop First --</option>
                     </select>
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-secondary btn-block btn-lg" style="margin-top: 1rem;">Register Driver & Save Bus Profile</button>
+            <button type="submit" class="btn btn-secondary btn-block btn-lg" style="margin-top: 1rem;" data-i18n="btn_register">Register Driver & Save Bus Profile</button>
         </form>
 
         <div class="auth-footer">
-            <p>Already registered? <a href="{% url 'driver_login' %}">Login as Driver</a></p>
+            <p><span data-i18n="already_account">Already registered?</span> <a href="{% url 'driver_login' %}" data-i18n="link_login">Login as Driver</a></p>
         </div>
     </div>
 </div>

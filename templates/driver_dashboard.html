@@ -7,11 +7,11 @@
 <div class="dashboard-container">
     <div class="dashboard-header">
         <div>
-            <h1>Driver Dashboard</h1>
-            <p class="user-greeting">Welcome, <strong>{{ driver.name }}</strong> (📱 {{ driver.phone_number }})</p>
+            <h1 data-i18n="driver_dashboard_title">Driver Dashboard</h1>
+            <p class="user-greeting"><span data-i18n="welcome_driver">Welcome</span>, <strong>{{ driver.name }}</strong> (📱 {{ driver.phone_number }})</p>
         </div>
         <div>
-            <a href="{% url 'driver_logout' %}" class="btn btn-outline-danger">Logout</a>
+            <a href="{% url 'driver_logout' %}" class="btn btn-outline-danger" data-i18n="link_login">Log out </a>
         </div>
     </div>
 
@@ -19,29 +19,29 @@
         <!-- Saved Bus & Route Profile Card (No Active Trip) -->
         <div class="card journey-setup-card">
             <div class="card-header">
-                <h2>🚌 Saved Bus Profile</h2>
-                <p>Your permanent bus and route information</p>
+                <h2>🚌 <span data-i18n="start_new_journey">Saved Bus Profile</span></h2>
+                <p data-i18n="assigned_route">Your permanent bus and route information</p>
             </div>
             <div class="card-body">
                 <div class="journey-details-grid" style="margin-bottom: 1.5rem;">
                     <div class="detail-box">
-                        <span class="detail-label">Bus Number</span>
+                        <span class="detail-label" data-i18n="bus_num_label">Bus Number</span>
                         <span class="detail-value">🚌 {{ driver.bus_number|default:"Not Assigned" }}</span>
                     </div>
                     <div class="detail-box">
-                        <span class="detail-label">Assigned Route</span>
+                        <span class="detail-label" data-i18n="assigned_route">Assigned Route</span>
                         <span class="detail-value">{{ driver.route.route_name|default:"Not Set" }}</span>
                     </div>
                     <div class="detail-box">
-                        <span class="detail-label">Service Type</span>
+                        <span class="detail-label" data-i18n="service_type_label">Service Type</span>
                         <span class="detail-value">{{ driver.route.service_type|default:"N/A" }}</span>
                     </div>
                     <div class="detail-box">
-                        <span class="detail-label">Starting Stop</span>
+                        <span class="detail-label" data-i18n="label_source_stop">Starting Stop</span>
                         <span class="detail-value">{{ driver.start_stop.stop_village_name|default:"N/A" }}</span>
                     </div>
                     <div class="detail-box">
-                        <span class="detail-label">Destination Stop</span>
+                        <span class="detail-label" data-i18n="label_dest_stop">Destination Stop</span>
                         <span class="detail-value">{{ driver.destination_stop.stop_village_name|default:"N/A" }}</span>
                     </div>
                 </div>
@@ -60,8 +60,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" id="btn-start-journey" class="btn btn-success btn-lg btn-block" style="font-size: 1.25rem; font-weight: 800; padding: 1.2rem;">
-                        🟢 START JOURNEY
+                    <button type="button" id="btn-start-journey" class="btn btn-success btn-lg btn-block" style="font-size: 1.25rem; font-weight: 800; padding: 1.2rem;" data-i18n="btn_start_gps">
+                        🟢 START JOURNEY WITH REAL GPS
                     </button>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                                             {% if trip.status == 'ENDED' %}
                                                 <span class="badge" style="background: #f1f5f9; color: #475569;">Completed</span>
                                             {% elif trip.status == 'LIVE' %}
-                                                <span class="badge badge-status-live">Live</span>
+                                                <span class="badge badge-status-live" data-i18n="status_live">Live</span>
                                             {% else %}
                                                 <span class="badge badge-status-delayed">{{ trip.status }}</span>
                                             {% endif %}
@@ -110,7 +110,7 @@
                         </table>
                     </div>
                 {% else %}
-                    <p style="padding: 1.5rem; text-align: center; color: #64748b;">No trip history recorded yet. Click <strong>START JOURNEY</strong> above to launch your first trip.</p>
+                    <p style="padding: 1.5rem; text-align: center; color: #64748b;">No trip history recorded yet. Click <strong data-i18n="btn_start_gps">START JOURNEY</strong> above to launch your first trip.</p>
                 {% endif %}
             </div>
         </div>
@@ -123,14 +123,14 @@
                     <div>
                         <span class="badge badge-bus">🚌 {{ active_trip.bus_number }}</span>
                         <h2>{{ active_trip.route.route_name }}</h2>
-                        <p class="service-tag">Service: <strong>{{ active_trip.route.service_type }}</strong></p>
+                        <p class="service-tag"><span data-i18n="service_type_label">Service:</span> <strong>{{ active_trip.route.service_type }}</strong></p>
                     </div>
                     <div class="status-badges">
                         <span class="badge badge-real" id="driver-gps-signal-badge">🟢 GPS ACTIVE</span>
                         {% if active_trip.status == 'LIVE' %}
-                            <span class="badge badge-status-live" id="driver-status-badge">🟢 LIVE</span>
+                            <span class="badge badge-status-live" id="driver-status-badge" data-i18n="status_live">🟢 LIVE</span>
                         {% elif active_trip.status == 'DELAYED' or active_trip.status == 'STOPPED' %}
-                            <span class="badge badge-status-delayed" id="driver-status-badge">🟠 {{ active_trip.status }}</span>
+                            <span class="badge badge-status-delayed" id="driver-status-badge" data-i18n="status_delayed">🟠 {{ active_trip.status }}</span>
                         {% else %}
                             <span class="badge badge-status-offline" id="driver-status-badge">🔴 {{ active_trip.status }}</span>
                         {% endif %}
@@ -143,11 +143,11 @@
                         <span class="detail-value">{{ active_trip.started_at|date:"H:i A" }}</span>
                     </div>
                     <div class="detail-box">
-                        <span class="detail-label">Current Stop</span>
+                        <span class="detail-label" data-i18n="current_stop_label">Current Stop</span>
                         <span class="detail-value" id="driver-current-stop">Loading...</span>
                     </div>
                     <div class="detail-box">
-                        <span class="detail-label">Next Stop</span>
+                        <span class="detail-label" data-i18n="next_stop_label">Next Stop</span>
                         <span class="detail-value" id="driver-next-stop">Loading...</span>
                     </div>
                     <div class="detail-box">
@@ -162,12 +162,12 @@
 
                 <!-- Stop Reason Status Banner -->
                 <div id="delay-status-banner" class="alert alert-warning {% if not active_trip.stop_reason %}d-none{% endif %}">
-                    <strong>⚠️ Stoppage Reported:</strong> <span id="current-reason-text">{{ active_trip.stop_reason }}</span>
+                    <strong>⚠️ <span data-i18n="bus_delayed_warning">Stoppage Reported:</span></strong> <span id="current-reason-text">{{ active_trip.stop_reason }}</span>
                 </div>
 
                 <!-- Action Controls -->
                 <div class="driver-actions">
-                    <button type="button" id="btn-end-journey" class="btn btn-danger btn-lg btn-block" style="font-size: 1.2rem; font-weight: 800;">🔴 END JOURNEY</button>
+                    <button type="button" id="btn-end-journey" class="btn btn-danger btn-lg btn-block" style="font-size: 1.2rem; font-weight: 800;" data-i18n="btn_stop_journey">🔴 STOP JOURNEY</button>
                     <button type="button" id="btn-resume-journey" class="btn btn-success btn-lg {% if active_trip.status == 'LIVE' %}d-none{% endif %}">RESUME JOURNEY</button>
                 </div>
 
@@ -195,18 +195,15 @@
                 <div class="stoppage-header">
                     <span class="warning-icon">⚠️</span>
                     <div>
-                        <h3>BUS STOPPED FOR MORE THAN 10 MINUTES</h3>
-                        <p>Please select a reason to notify passengers on route</p>
+                        <h3 data-i18n="stoppage_alert_title">BUS STOPPED FOR MORE THAN 10 MINUTES</h3>
+                        <p data-i18n="stoppage_alert_desc">Please select a reason to notify passengers on route</p>
                     </div>
                 </div>
                 <div class="stoppage-reasons-grid">
-                    <button type="button" class="btn-reason" data-reason="Road Construction">🚧 Road Construction</button>
-                    <button type="button" class="btn-reason" data-reason="Traffic Congestion">🚦 Traffic Congestion</button>
-                    <button type="button" class="btn-reason" data-reason="Bus Breakdown">🔧 Bus Breakdown</button>
-                    <button type="button" class="btn-reason" data-reason="Accident / Road Block">🛑 Accident / Road Block</button>
-                    <button type="button" class="btn-reason" data-reason="Fuel / Maintenance">⛽ Fuel / Maintenance</button>
-                    <button type="button" class="btn-reason" data-reason="Driver Break">☕ Driver Break</button>
-                    <button type="button" class="btn-reason" data-reason="Other">Other</button>
+                    <button type="button" class="btn-reason" data-reason="Road Construction" data-i18n="reason_roadworks">🚧 Road Construction Work</button>
+                    <button type="button" class="btn-reason" data-reason="Traffic Congestion" data-i18n="reason_traffic">🚦 Heavy Traffic Jam</button>
+                    <button type="button" class="btn-reason" data-reason="Bus Breakdown" data-i18n="reason_breakdown">🛠️ Vehicle Breakdown</button>
+                    <button type="button" class="btn-reason" data-reason="Heavy Rain / Weather" data-i18n="reason_weather">🌧️ Heavy Rain / Weather</button>
                 </div>
             </div>
 
@@ -234,7 +231,7 @@
             </p>
             <div style="display: flex; gap: 1rem;">
                 <button type="button" id="btn-cancel-end" class="btn btn-outline-danger btn-block">CANCEL</button>
-                <button type="button" id="btn-confirm-end" class="btn btn-danger btn-block">END JOURNEY</button>
+                <button type="button" id="btn-confirm-end" class="btn btn-danger btn-block" data-i18n="btn_stop_journey">END JOURNEY</button>
             </div>
         </div>
     </div>
