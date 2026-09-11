@@ -29,7 +29,7 @@ DEBUG = True
 # --------------------------------------------------
 
 ALLOWED_HOSTS = [
-    "8000-kode-ws-20cd980d3.hebbale.academy",
+    "8000-kode-ws-182dab7bc.hebbale.academy",
     "localhost",
     "127.0.0.1",
 ]
@@ -40,7 +40,7 @@ ALLOWED_HOSTS = [
 # --------------------------------------------------
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://8000-kode-ws-20cd980d3.hebbale.academy",
+    "https://8000-kode-ws-182dab7bc.hebbale.academy",
 ]
 
 
